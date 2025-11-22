@@ -135,7 +135,7 @@ class _RegisterpageState extends State<RegisterPage> {
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const Loginpage(),
@@ -277,7 +277,7 @@ class _RegisterpageState extends State<RegisterPage> {
               //close the confirmation dialog
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const Loginpage()),
               );
