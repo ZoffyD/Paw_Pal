@@ -229,7 +229,7 @@ class _LoginpageState extends State<Loginpage> {
 
             if (resarray['status'] == 'success') {
               user = User.fromJson(resarray['data'][0]);
-
+              print(user);
               if (!mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
