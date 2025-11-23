@@ -226,10 +226,9 @@ class _LoginpageState extends State<Loginpage> {
             var jsonResponse = (response.body);
 
             var resarray = json.decode(jsonResponse);
-
             if (resarray['status'] == 'success') {
               user = User.fromJson(resarray['data'][0]);
-              print(user);
+              print (resarray['data'][0]); 
               if (!mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -237,7 +236,6 @@ class _LoginpageState extends State<Loginpage> {
                   backgroundColor: Colors.green,
                 ),
               );
-
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => MainPage(user: user)),

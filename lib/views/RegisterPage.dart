@@ -135,7 +135,7 @@ class _RegisterpageState extends State<RegisterPage> {
                   GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacement(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const Loginpage(),
