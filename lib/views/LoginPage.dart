@@ -226,7 +226,7 @@ class _LoginpageState extends State<Loginpage> {
             var jsonResponse = (response.body);
 
             var resarray = json.decode(jsonResponse);
-            if (resarray['status'] == true) {
+            if (resarray['success']) {
               user = User.fromJson(resarray['data'][0]);
               print (resarray['data'][0]); 
               if (!mounted) return;

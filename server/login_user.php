@@ -4,7 +4,7 @@
   if($_SERVER['REQUEST_METHOD']=='POST'){
 
     if(!isset($_POST['email']) || !isset($_POST['password'])){
-        $response = array ('status' => false, 'message' => 'Invalid Request');
+        $response = array ('success' => false, 'message' => 'Invalid Request');
         sendJsonResponse($response);
         exit();
     }
@@ -22,15 +22,15 @@
       while($row = $result->fetch_assoc()){
           $userdata[] = $row;
       }
-        $response = array ('status' => true, 'data' => $userdata,'message' => 'Login Success');
+        $response = array ('success' => true, 'data' => $userdata,'message' => 'Login Success');
         sendJsonResponse($response);
     }else{
-        $response = array ('status'=> false, 'message'=> 'Invalid email or password','data '=> null);
+        $response = array ('success'=> false, 'message'=> 'Invalid email or password','data '=> null);
         sendJsonResponse($response);
   }
 
 }else{
-  $response = array ('status'=> false, 'message'=> 'Method not allowed');
+  $response = array ('success'=> false, 'message'=> 'Method not allowed');
   sendJsonResponse($response);
   exit();
 }

@@ -25,7 +25,7 @@ if(!isset($_POST['email']) || !isset($_POST['password'])|| !isset($_POST['name']
     $result = $conn->query($sqlcheckmail);
     if($result->num_rows > 0){
         $response = array(
-            'status' => false,
+            'success' => false,
             'message' => 'Email already registered'
         );
         sendJsonResponse($response);
@@ -37,20 +37,20 @@ if(!isset($_POST['email']) || !isset($_POST['password'])|| !isset($_POST['name']
     try{
         if($conn->query($sqlinsert) === TRUE){
             $response = array(
-                'status' => true,
+                'success' => true,
                 'message' => 'Registration successful'
             );
             sendJsonResponse($response);
         } else {
             $response = array(
-                'status' => false,
+                'success' => false,
                 'message' => 'Registration failed'
             );
             sendJsonResponse($response);
         }
     } catch (Exception $e){
         $response = array(
-            'status' => false,
+            'success' => false,
             'message' => 'An error occurred: ' . $e->getMessage()
         );
         sendJsonResponse($response);
