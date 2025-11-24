@@ -20,12 +20,12 @@ if(!isset($_POST['email']) || !isset($_POST['password'])|| !isset($_POST['name']
     $password = $_POST['password'];
     $hashedpassword = sha1($password);
     $phone = $_POST['phone'];
-
+    //Check if email already exists
     $sqlcheckmail = "SELECT * FROM tbl_users WHERE email = '$email'";
     $result = $conn->query($sqlcheckmail);
     if($result->num_rows > 0){
         $response = array(
-            'status' => 'failed',
+            'status' => false,
             'message' => 'Email already registered'
         );
         sendJsonResponse($response);
@@ -37,20 +37,20 @@ if(!isset($_POST['email']) || !isset($_POST['password'])|| !isset($_POST['name']
     try{
         if($conn->query($sqlinsert) === TRUE){
             $response = array(
-                'status' => 'success',
+                'status' => true,
                 'message' => 'Registration successful'
             );
             sendJsonResponse($response);
         } else {
             $response = array(
-                'status' => 'failed',
+                'status' => false,
                 'message' => 'Registration failed'
             );
             sendJsonResponse($response);
         }
     } catch (Exception $e){
         $response = array(
-            'status' => 'error',
+            'status' => false,
             'message' => 'An error occurred: ' . $e->getMessage()
         );
         sendJsonResponse($response);

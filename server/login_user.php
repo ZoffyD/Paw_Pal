@@ -4,7 +4,7 @@
   if($_SERVER['REQUEST_METHOD']=='POST'){
 
     if(!isset($_POST['email']) || !isset($_POST['password'])){
-        $response = array ('status' => 'failed', 'message' => 'Invalid Request');
+        $response = array ('status' => false, 'message' => 'Invalid Request');
         sendJsonResponse($response);
         exit();
     }
@@ -12,6 +12,7 @@
     $email = $_POST['email'];
     $password = $_POST['password'];
     $hashedpassword = sha1($password);
+    
     include 'dbconnect.php';
     $sqllogin = "SELECT * FROM `tbl_users` WHERE email = '$email' AND `password` = '$hashedpassword'";
     $result = $conn->query($sqllogin);
@@ -21,15 +22,15 @@
       while($row = $result->fetch_assoc()){
           $userdata[] = $row;
       }
-        $response = array ('status' => 'success', 'data' => $userdata,'message' => 'Login Success');
+        $response = array ('status' => true, 'data' => $userdata,'message' => 'Login Success');
         sendJsonResponse($response);
     }else{
-        $response = array ('status'=> 'failed', 'message'=> 'Invalid email or password','data '=> null);
+        $response = array ('status'=> false, 'message'=> 'Invalid email or password','data '=> null);
         sendJsonResponse($response);
   }
 
 }else{
-  $response = array ('status'=> 'error', 'message'=> 'Method not allowed');
+  $response = array ('status'=> false, 'message'=> 'Method not allowed');
   sendJsonResponse($response);
   exit();
 }
