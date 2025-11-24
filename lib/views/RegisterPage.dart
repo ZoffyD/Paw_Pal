@@ -261,7 +261,7 @@ class _RegisterpageState extends State<RegisterPage> {
             var resarray = jsonDecode(jsonResponse);
             log(jsonResponse);
             
-            if (resarray['status'] == 'success') {
+            if (resarray['status'] == true ) {
               if (!mounted) return;
               SnackBar snackBar = const SnackBar(
                 content: Text('Register successful'),
