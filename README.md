@@ -26,7 +26,7 @@ JSON response handling
 
 
 User Login
--Email + Password input
+- Email + Password input
 -SHA-1 hashed password match
 -Loads user details from MySQL
 -Displays successful login message
