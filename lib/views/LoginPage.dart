@@ -1,10 +1,9 @@
 import 'dart:convert';
-
+import 'package:pawpal/views/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawpal/model/user.dart';
 import 'package:pawpal/myconfig.dart';
-import 'package:pawpal/views/MainPage.dart';
 import 'package:pawpal/views/RegisterPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -238,7 +237,7 @@ class _LoginpageState extends State<Loginpage> {
               );
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => MainPage(user: user)),
+                MaterialPageRoute(builder: (context) => Homepage(user: user)),
               );
             } else {
               if (!mounted) return;

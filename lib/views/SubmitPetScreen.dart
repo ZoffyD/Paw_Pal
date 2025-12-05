@@ -475,6 +475,16 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
 
   void showSubmissionDialog() {
     String name = petNameController.text.trim();
+    //every field is not field
+    if(name.isEmpty && description.trim().isEmpty && locationController.text.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill all details'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
 
     //name validation
     if (name.isEmpty) {

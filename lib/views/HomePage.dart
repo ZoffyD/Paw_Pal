@@ -4,59 +4,58 @@ import 'package:pawpal/myconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:pawpal/model/user.dart';
 import 'package:pawpal/model/service.dart';
-import 'package:pawpal/views/HomePage.dart';
 import 'package:pawpal/views/LoginPage.dart';
+import 'package:pawpal/views/MainPage.dart';
 import 'package:pawpal/views/SubmitPetScreen.dart';
 
-class MainPage extends StatefulWidget {
+class Homepage extends StatefulWidget {
   final User? user;
 
-  const MainPage({super.key, required this.user});
+  const Homepage({super.key, required this.user});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _HomepageState extends State<Homepage> {
   List<service> petList = [];
-  String status = "No submission yet";
+  String status = "Loading . . .";
   late double screenWidth, screenHeight;
 
   @override
   void initState() {
     super.initState();
-    loadServices('');
+    loadAll();
   }
 
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
     if (screenWidth > 600) {
       screenWidth = 600;
     } else {
       screenWidth = screenWidth;
     }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          ' My Page',
+          'PawPal Home Page',
           style: TextStyle(fontSize: 24, color: Colors.yellowAccent),
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh_rounded, color: Colors.yellowAccent),
             onPressed: () {
-              loadServices('');
+              loadAll();
             },
           ),
           IconButton(
-            icon: Icon(Icons.home, color: Colors.yellowAccent),
+            icon: Icon(Icons.person, color: Colors.yellowAccent),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => Homepage(user: widget.user)),
+                MaterialPageRoute(builder: (context) => MainPage(user: widget.user)),
               );
             },
           ),
@@ -110,7 +109,7 @@ class _MainPageState extends State<MainPage> {
                             Icon(Icons.find_in_page, size: 70),
                             SizedBox(height: 12),
                             Text(
-                              status ,
+                              status,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.black,
@@ -168,7 +167,6 @@ class _MainPageState extends State<MainPage> {
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                        
                                       ),
                                       SizedBox(height: 5),
                                       Text(
@@ -193,9 +191,9 @@ class _MainPageState extends State<MainPage> {
                                           fontSize: 17,
                                           fontWeight: FontWeight.bold,
                                         ),
-                                          maxLines:2,
-                                          overflow: TextOverflow.ellipsis,
-                                      ), 
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -215,50 +213,46 @@ class _MainPageState extends State<MainPage> {
             context,
             MaterialPageRoute(
               builder: (context) => Submitpetscreen(user: widget.user),
-            )
+            ),
           );
         },
-        child:Icon(Icons.add),
-        ),
+        child: Icon(Icons.add),
+      ),
+      
     );
   }
 
-  void loadServices(String query) {
+  void loadAll() {
     petList.clear();
     setState(() {
       status = "Loading . . .";
     });
-    http.get(
-      Uri.parse(
-        '${Myconfig.baseUrl}/pawpal_db/api/get_my_pets.php?userid=${widget.user!.id}',
-      ),
-    ).then((response){
-      if(response.statusCode == 200){
-        var jsonResponse = jsonDecode(response.body);
-        if(jsonResponse['success']==true &&
-           jsonResponse['data']!=null &&
-           jsonResponse['data'].isNotEmpty){
-            petList.clear();
-            for(var item in jsonResponse['data']){
-              petList.add(service.fromJson(item));
+    http
+        .get(Uri.parse('${Myconfig.baseUrl}/pawpal_db/api/getalldetails.php'))
+        .then((response) {
+          if (response.statusCode == 200) {
+            var jsonResponse = jsonDecode(response.body);
+            if (jsonResponse['success'] == true &&
+                jsonResponse['data'] != null &&
+                jsonResponse['data'].isNotEmpty) {
+              petList.clear();
+              for (var item in jsonResponse['data']) {
+                petList.add(service.fromJson(item));
+              }
+              setState(() {
+                status = "";
+              });
+            } else {
+              setState(() {
+                petList.clear();
+                status = "No pets yet";
+              });
             }
+          } else {
             setState(() {
-              status = "";
+              status = "Failed to load data.";
             });
-        }else{
-          setState(() {
-            petList.clear();
-            status = "No submission yet";
-          });
-        }
-      }else{
-        setState(() {
-          status = "Failed to load data.";
-          
+          }
         });
-      }
-    });
   }
-
-
 }
