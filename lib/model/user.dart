@@ -15,7 +15,7 @@ class User {
       this.RegDate,});
 
     User.fromJson(Map<String, dynamic> json) {
-      id = json['id'];
+      id = json['user_id'].toString();
       name = json['name'];
       email = json['email'];
       password = json['password'];
