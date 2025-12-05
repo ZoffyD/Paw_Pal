@@ -120,7 +120,7 @@ class _MainPageState extends State<MainPage> {
                           return Card(
                             elevation: 4,
                             margin: const EdgeInsets.symmetric(
-                              vertical: 10,
+                              vertical: 8,
                               horizontal: 10,
                             ),
                             shape: RoundedRectangleBorder(
@@ -136,7 +136,7 @@ class _MainPageState extends State<MainPage> {
 
                                   child: Image.network(
                                     '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
-                                    height: 180,
+                                    height: 150,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {

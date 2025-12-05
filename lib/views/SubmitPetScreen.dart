@@ -382,10 +382,13 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
     setState(() {
       if (num == 1) {
         image1 = File(images.path);
+        cropImage(image1!, num);
       } else if (num == 2) {
         image2 = File(images.path);
+        cropImage(image2!, num);
       } else if (num == 3) {
         image3 = File(images.path);
+        cropImage(image3!, num);
       }
     });
   }
@@ -406,16 +409,41 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
     setState(() {
       if (num == 1) {
         image1 = File(images.path);
-        
+        cropImage(image1!, num);
       } else if (num == 2) {
         image2 = File(images.path);
+        cropImage(image2!, num);
       } else if (num == 3) {
         image3 = File(images.path);
+        cropImage(image3!, num);
       }
     });
   }
 
- 
+  Future<void> cropImage(File currentFile, int num) async {
+    final CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: currentFile.path,
+      aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Image',
+          toolbarColor: Colors.amberAccent,
+          toolbarWidgetColor: Colors.blueAccent,
+        ),
+      ],
+    );
+    if(croppedFile != null ){
+      currentFile = File(croppedFile.path);
+    }
+    switch(num){
+      case 1: image1 = currentFile;break;
+      case 2: image2 = currentFile;break;
+      case 3: image3 = currentFile;break;
+
+    }
+    setState(() {});
+
+  }
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
