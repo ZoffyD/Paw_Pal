@@ -53,7 +53,8 @@ class _HomepageState extends State<Homepage> {
           IconButton(
             icon: Icon(Icons.person, color: Colors.yellowAccent),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.pop(context);
+              Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => MainPage(user: widget.user)),
               );
@@ -133,71 +134,86 @@ class _HomepageState extends State<Homepage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12),
-                                  ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
 
-                                  child: Image.network(
-                                    '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
-                                    height: 150,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Icon(
-                                        Icons.pets,
-                                        size: 50,
-                                        color: Colors.grey,
-                                      );
+                                    child: Container(
+                                      width: screenWidth * 0.28,
+                                      height: screenWidth * 0.22,
+                                      color: Colors.grey,
+
+                                      child: Image.network(
+                                        '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              return const Icon(
+                                                Icons.pets,
+                                                size: 50,
+                                                color: Colors.grey,
+                                              );
+                                            },
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width:12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Name: ${petList[index].petname.toString()}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "Type: ${petList[index].petType.toString()}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "Category: ${petList[index].petCategory.toString()}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            
+                                          ),
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "Description: ${petList[index].description.toString()}",
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      showDetails(index);
                                     },
+                                    icon: Icon(
+                                      Icons.arrow_forward_sharp,
+                                      size: 18,
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Name: ${petList[index].petname.toString()}",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        "Type: ${petList[index].petType.toString()}",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        "Category: ${petList[index].petCategory.toString()}",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        "Description: ${petList[index].description.toString()}",
-                                        style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -254,5 +270,218 @@ class _HomepageState extends State<Homepage> {
             });
           }
         });
+  }
+  void showDetails(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(petList[index].petname.toString()),
+          content: SizedBox(
+            width: screenWidth,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    child: Image.network(
+                      '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.pets,
+                          size: 50,
+                          color: Colors.grey,
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Table(
+                    border: TableBorder.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                      style: BorderStyle.solid,
+                    ),
+                    columnWidths: {
+                      0: FixedColumnWidth(100.0),
+                      1: FlexColumnWidth(),
+                    },
+                    children: [
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Pet Name'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(petList[index].petname.toString()),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Pet Type'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(petList[index].petType.toString()),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Category'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                petList[index].petCategory.toString(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Description'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                petList[index].description.toString(),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Pet Owner'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(petList[index].name.toString()),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Phone'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(petList[index].phone.toString()),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        children: [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Em'),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(petList[index].email.toString()),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    Future<User> getPetOwnerDetails(int index) async {
+      String petownerid = petList[index].userId.toString();
+      User petOwner = User();
+      try {
+        final response = await http.get(
+          Uri.parse(
+            '${Myconfig.baseUrl}/pawpal/api/getOwnerDetails.php?userid=$petownerid',
+          ),
+        );
+        if (response.statusCode == 200) {
+          var jsonResponse = response.body;
+          var resarray = jsonDecode(jsonResponse);
+          if (resarray['success'] == true) {
+            petOwner = User.fromJson(resarray['data'][0]);
+          }
+        }
+      } catch (e) {
+        print('Fetching user data error :$e');
+      }
+      return petOwner;
+    }
   }
 }

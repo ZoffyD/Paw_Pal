@@ -423,7 +423,7 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
   Future<void> cropImage(File currentFile, int num) async {
     final CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: currentFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 3),
+      aspectRatio: CropAspectRatio(ratioX: 5, ratioY: 3),
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',

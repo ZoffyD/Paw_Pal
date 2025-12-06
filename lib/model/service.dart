@@ -9,7 +9,12 @@ class service {
   String? lng;
   String? created_at;
 
-  
+  //Owner info
+  String? name;
+  String? email;
+  String? phone;
+
+
   service({
     this.petid,
     this.userId,
@@ -20,6 +25,9 @@ class service {
     this.lat,
     this.lng,
     this.created_at,
+    this.name,
+    this.email,
+    this.phone,
   });
 
    service.fromJson(Map<String, dynamic> json) {
@@ -32,6 +40,10 @@ class service {
       lat = json['lat'];
       lng = json['lng'];
       created_at = json['created_at'];
+
+      name = json['name'];
+      email = json['email'];
+      phone = json['phone'];
   }  
 
   Map<String, dynamic> toJson() {
@@ -45,6 +57,10 @@ class service {
     data['lat'] = lat;
     data['lng'] = lng;
     data['created_at'] = created_at;
+
+    data['name'] = name;
+    data['email'] = email;
+    data['phone']= phone;
     return data;
   }
 }
