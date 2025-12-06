@@ -2,6 +2,16 @@
 
 PawPal Adoption and Donation application
 
+# Installation
+1. Install XAMPP
+2. Open XAAMPP Control Panel and Start Apache and MySQL
+3. Download the project as zip file
+4. Extract the file in C:\xampp\htdcos
+5. Open localhost/phpymyadmin
+6. Create a database name "pawpal_db"
+7. Import the database
+8. After import successful, run the main file in VS code
+
 # Project Overview 
 PawPal is a mobile application that support only android version.
 It is build using Flutter as frontend, PHP as backend, and MySQL (database)
