@@ -1,9 +1,12 @@
-class service {
+class pet {
   String? petid;
   String? userId;
   String? petname;
+  String? age;
+  String? gender;
   String? petType;
   String? petCategory;
+  String? health;
   String? description;
   String? lat;
   String? lng;
@@ -15,12 +18,15 @@ class service {
   String? phone;
 
 
-  service({
+  pet({
     this.petid,
     this.userId,
     this.petname,
+    this.age,
+    this.gender,
     this.petType,
     this.petCategory,
+    this.health,
     this.description,
     this.lat,
     this.lng,
@@ -30,12 +36,15 @@ class service {
     this.phone,
   });
 
-   service.fromJson(Map<String, dynamic> json) {
+   pet.fromJson(Map<String, dynamic> json) {
       petid =  json['pet_id'];
       userId = json['user_id'];
       petname = json['pet_name'];
+      age = json['age'];
+      gender = json['gender'];
       petType = json['pet_type'];
       petCategory = json[ 'category'];
+      health = json['health'];
       description = json['description'];
       lat = json['lat'];
       lng = json['lng'];
@@ -51,8 +60,11 @@ class service {
     data['pet_id'] = petid;
     data['user_id'] = userId;
     data['pet_name'] = petname;
+    data['age'] = age;
+    data['gender'] = gender;
     data['pet_type'] = petType;
-    data[ 'category'] = petCategory;
+    data['category'] = petCategory;
+    data['health'] = health;
     data['description'] = description;
     data['lat'] = lat;
     data['lng'] = lng;

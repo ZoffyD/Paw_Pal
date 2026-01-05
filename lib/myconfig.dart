@@ -1,3 +1,3 @@
 class Myconfig {
-  static const String baseUrl = "http://172.20.10.9";
+  static const String baseUrl = "https://canorcannot.com/Eric/pawpal/server";
 }

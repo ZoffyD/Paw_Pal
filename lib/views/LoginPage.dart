@@ -163,8 +163,28 @@ class _LoginpageState extends State<Loginpage> {
                   },
                   child: Text('Don\'t have an account? Register here.'),
                 ),
-                SizedBox(height: 7.0),
-                Text('Forgot Password?'),
+                const SizedBox(height: 7.0),
+                const Text('Forgot Password?'),
+                const SizedBox(height:10.0),
+                GestureDetector(
+                  onTap: () {
+                    User guest = User(
+                      id: "0", 
+                      name: "Guest", 
+                      email: "guest@gmail.com", 
+                      phone: "N/A", 
+                      password: "N/A", 
+                      RegDate: "N/A"
+                    );
+                    
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => Homepage(user: guest)),
+                    );
+                  },
+                  child: Text('Continue as Guest', style: TextStyle(fontSize: 16)),
+                ),
+                
               ],
             ),
           ),
@@ -217,45 +237,47 @@ class _LoginpageState extends State<Loginpage> {
     }
     http
         .post(
-          Uri.parse('${Myconfig.baseUrl}/pawpal_db/api/login_user.php'),
+          Uri.parse('${Myconfig.baseUrl}/api/login_user.php'),
           body: {"email": email, "password": password},
         )
         .then((response) {
           if (response.statusCode == 200) {
-            var jsonResponse = (response.body);
-
+            var jsonResponse = response.body;
             var resarray = json.decode(jsonResponse);
-            if (resarray['success']) {
-              user = User.fromJson(resarray['data'][0]);
-              print (resarray['data'][0]); 
-              if (!mounted) return;
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Login successful"),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => Homepage(user: user)),
-              );
+
+            if (resarray['success'] == true) {
+              // Safety Check: Ensure data list is not empty
+              if (resarray['data'] != null && resarray['data'].isNotEmpty) {
+                user = User.fromJson(resarray['data'][0]);
+
+                if (!mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Login successful"),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => Homepage(user: user)),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Login failed: No user data found"),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
             } else {
-              if (!mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(resarray['message']),
+                  content: Text("Login Failed"),
                   backgroundColor: Colors.red,
                 ),
               );
             }
-          } else {
-            if (!mounted) return;
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text("Login Failed: ${response.statusCode}"),
-                backgroundColor: Colors.red,
-              ),
-            );
           }
         });
   }

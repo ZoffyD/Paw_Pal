@@ -20,7 +20,7 @@ class User {
       email = json['email'];
       password = json['password'];
       phone = json['phone'];
-      RegDate = json['RegDate'];
+      RegDate = json['reg_date'];
   }
 
   Map<String, dynamic> toJson() {

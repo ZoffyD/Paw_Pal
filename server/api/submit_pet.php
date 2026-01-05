@@ -9,8 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 }
 $user_id = $_POST['userid'];
 $pet_name = $_POST['petName'];
+$age = $POST['age'];
+$gender = $POST['gender'];
 $pet_type = $_POST['petType'];
 $category = $_POST['petCategory'];
+$category = $_POST['health'];
 $description = $_POST['description'];
 $lat = $_POST['latitude'];
 $lng = $_POST['longitude'];
@@ -22,9 +25,9 @@ $image_paths = "";
 
 //Insert new pet submission
 $sqlinsert = "INSERT INTO tbl_pets 
-(user_id, pet_name, pet_type, category, description, image_paths, lat, lng) 
+(user_id, pet_name, age, gender, pet_type, category, description, image_paths, lat, lng) 
 VALUES 
-('$user_id', '$pet_name', '$pet_type', '$category', '$description', '', '$lat', '$lng')";
+('$user_id', '$pet_name', '$age','$gender','$pet_type', '$category', '$description', '', '$lat', '$lng')";
 
 try {
     if ($conn->query($sqlinsert) === TRUE) {

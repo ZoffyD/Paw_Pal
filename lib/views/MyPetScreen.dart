@@ -3,31 +3,29 @@ import 'package:http/http.dart' as http;
 import 'package:pawpal/myconfig.dart';
 import 'package:flutter/material.dart';
 import 'package:pawpal/model/user.dart';
-import 'package:pawpal/model/pet.dart';
-import 'package:pawpal/views/PetDetailScreen.dart';
 import 'package:pawpal/views/SubmitPetScreen.dart';
-import 'package:pawpal/shared/mydrawer.dart';
+import '../model/pet.dart';
+import '../shared/mydrawer.dart';
+import 'PetDetailScreen.dart';
 
-
-class Homepage extends StatefulWidget {
+class Mypetscreen extends StatefulWidget {
   final User? user;
 
-  const Homepage({super.key, required this.user});
+  const Mypetscreen({super.key, required this.user});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Mypetscreen> createState() => _MypetscreenState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _MypetscreenState extends State<Mypetscreen> {
   List<pet> petList = [];
-  String status = "Loading . . .";
-
-  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit','Other'];
-  String selectedFilter = 'All';
+  String status = "No submission yet";
+  late double screenWidth, screenHeight;
 
   TextEditingController searchController = TextEditingController();
 
-  late double screenWidth, screenHeight;
+  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit','Other'];
+  String selectedFilter = 'All';
 
   @override
   void initState() {
@@ -48,7 +46,7 @@ class _HomepageState extends State<Homepage> {
       drawer: MyDrawer(user: widget.user),
       appBar: AppBar(
         title: Text(
-          'PawPal Home',
+          'My Pet',
           style: TextStyle(
             fontSize: 24,
             color: Colors.yellowAccent,
@@ -222,7 +220,7 @@ class _HomepageState extends State<Homepage> {
                                         height: 110,
                                         color: Colors.grey[200],
                                         child: Image.network(
-                                          '${Myconfig.baseUrl}/pawpal/server/assets/pet/pet_${petList[index].petid}_1.png',
+                                          '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
@@ -346,10 +344,7 @@ class _HomepageState extends State<Homepage> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            PetDetailScreen(
-              user: widget.user!, 
-              petData: currentPet
-          ),
+            PetDetailScreen(user: widget.user!, petData: currentPet),
       ),
     );
   }
@@ -365,7 +360,7 @@ class _HomepageState extends State<Homepage> {
     http
         .get(
           Uri.parse(
-            '${Myconfig.baseUrl}/api/get_all_pets.php?search=$search&filter=$selectedFilter',
+            '${Myconfig.baseUrl}/api/get_my_pets.php?userid=${widget.user!.id}&search=$search&filter=$selectedFilter',
           ),
         )
         .then((response) {
@@ -394,5 +389,4 @@ class _HomepageState extends State<Homepage> {
           }
         });
   }
-
 }
