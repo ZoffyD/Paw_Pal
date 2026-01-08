@@ -32,6 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     email = widget.user.email ?? "guest@gmail.com";
     phone = widget.user.phone ?? "Not set yet";
 
+    loadLocalData();
+
     if (widget.user.id != "0") {
       _loadUserData();
     }
@@ -49,7 +51,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         title: const Text(
           "My Profile",
-          style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue,
       ),
@@ -59,10 +61,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             //  profile header
             Container(
+              
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),
               decoration: const BoxDecoration(
-                color: Colors.blue,
+                
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
               child: Column(
@@ -73,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     name,
                     style: const TextStyle(
                       fontSize: 24,
-                      color: Colors.white,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -83,12 +86,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 20),
             //wallet
             Card(
-              elevation: 4,
+              elevation: 5,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(15),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
+              child: Container(
+                height: 110,
+                padding: const EdgeInsets.all(24.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -183,8 +187,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> _loadUserData() async {
-    setState(() => isLoading = true);
-
     try {
       final response = await http.get(
         Uri.parse(
@@ -200,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             name = userData['name'];
             phone = userData['phone'];
             email = userData['email'];
-            wallet = double.parse(userData['wallet']??"0").toStringAsFixed(2);
+            wallet = double.parse(userData['wallet'] ?? "0").toStringAsFixed(2);
 
             widget.user.name = name;
             widget.user.email = email;
@@ -209,6 +211,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (userData['profile_image'] != null &&
                 userData['profile_image'].toString().isNotEmpty) {
               image = userData['profile_image'];
+            }else{
+              image = null;
             }
             isLoading = false;
           });
@@ -217,6 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           await prefs.setString('name', name);
           await prefs.setString('phone', phone);
           await prefs.setString('email', email);
+          await prefs.setString('wallet', wallet);
           if (image != null) {
             await prefs.setString('profile_image', image!);
           }
@@ -224,16 +229,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     } catch (e) {
       print("$e");
-      setState(() => isLoading = false);
     }
   }
 
   Widget infoCard(IconData icon, String title, String value) {
     return Card(
       margin: const EdgeInsets.only(bottom: 15),
-      elevation: 2,
+      elevation: 5,
       child: ListTile(
         leading: Container(
+          height: 110,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: Colors.blue.withOpacity(0.1),
@@ -243,7 +248,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 12, color: Colors.grey),
+          style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 85, 85, 85)),
         ),
         subtitle: Text(
           value,
@@ -254,16 +259,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildProfileImage() {
-    String url;
-    if (image != null) {
-      //new image uploaded
-      url =
-          '${Myconfig.baseUrl}/assets/person/$image?v=${DateTime.now().millisecondsSinceEpoch}';
-    } else {
-      //exisiting image
-      url =
-          '${Myconfig.baseUrl}/assets/person/person_${widget.user.id}.png?v=${DateTime.now().millisecondsSinceEpoch}';
+    if (image == null || image!.isEmpty ) {
+      return CircleAvatar(
+        radius: 90,
+        backgroundColor: Colors.white,
+        child: Container(
+          width: 180,
+          height: 180,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width:4)
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            name.isNotEmpty ? name[0].toUpperCase() : "?",
+            style: const TextStyle(
+              fontSize: 60,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )
+        )
+      );
     }
+    String url = '${Myconfig.baseUrl}/assets/person/$image?v=${DateTime.now().millisecondsSinceEpoch}';
 
     return CircleAvatar(
       radius: 90,
@@ -274,23 +294,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           width: 180,
           height: 180,
           fit: BoxFit.cover,
-
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              width: 120,
-              height: 120,
-              color: Colors.grey[200],
-              alignment: Alignment.center,
-              child: Text(
-                name.isNotEmpty ? name[0].toUpperCase() : "?",
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-            );
-          },
         ),
       ),
     );
@@ -329,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 Navigator.pop(context);
                 double amount = double.tryParse(amountController.text) ?? 0.00;
-                if (amount > 0 ) {
+                if (amount > 0) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -341,11 +344,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   });
                 }
               },
-              child: Text("Pay"),
+              child: Text("Top Up"),
             ),
           ],
         );
       },
     );
+  }
+
+  void loadLocalData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? name;
+      phone = prefs.getString('phone') ?? phone;
+      email = prefs.getString('email') ?? email;
+      wallet = prefs.getString('wallet') ?? wallet;
+
+      String? savedImage = prefs.getString('profile_image');
+      if (savedImage != null && savedImage.isNotEmpty) {
+        image = savedImage;
+      }
+    });
   }
 }

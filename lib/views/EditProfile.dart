@@ -17,7 +17,7 @@ class Editprofile extends StatefulWidget {
 
 class _ProfileScreenState extends State<Editprofile> {
   File? image;
-  String? serverImageName;
+  String? uploadImage;
 
   ImagePicker picker = ImagePicker();
 
@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<Editprofile> {
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadFreshUserData();
   }
 
   @override
@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<Editprofile> {
       appBar: AppBar(
         title: const Text(
           "Edit Profile",
-          style: TextStyle(color: Colors.yellow, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.blue,
       ),
@@ -124,7 +124,7 @@ class _ProfileScreenState extends State<Editprofile> {
     );
   }
 
-  Future<void> _loadUserData() async {
+  Future<void> _loadFreshUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     setState(() {
@@ -133,12 +133,36 @@ class _ProfileScreenState extends State<Editprofile> {
           prefs.getString('phone') ?? widget.user.phone ?? '';
       emailController.text =
           prefs.getString('email') ?? widget.user.email ?? '';
-
-      String? savedImage = prefs.getString('profile_image');
-      if (savedImage != null && savedImage.isNotEmpty) {
-        serverImageName = savedImage;
-      }
     });
+    try {
+      final response = await http.get(
+        Uri.parse(
+          '${Myconfig.baseUrl}/api/get_user_detail.php?userid=${widget.user.id}',
+        ),
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        if (jsonResponse['success'] == true) {
+          var userData = jsonResponse['data'][0];
+          setState(() {
+            nameController.text = userData['name'];
+            phoneController.text = userData['phone'];
+            emailController.text = userData['email'];
+
+            if (userData['profile_image'] != null &&
+                userData['profile_image'].toString().isNotEmpty) {
+              uploadImage = userData['profile_image'];
+              prefs.setString('profile_image', uploadImage!);
+            } else {
+              uploadImage = null;
+              prefs.remove('profile_image');
+            }
+          });
+        }
+      }
+    } catch (e) {
+      print("$e");
+    }
   }
 
   Future<void> _updateProfile() async {
@@ -201,7 +225,7 @@ class _ProfileScreenState extends State<Editprofile> {
           if (data['new_image'] != null) {
             await prefs.setString('profile_image', data['new_image']);
             setState(() {
-              serverImageName = data['new_image'];
+              uploadImage = data['new_image'];
               image = null;
             });
           }
@@ -213,7 +237,6 @@ class _ProfileScreenState extends State<Editprofile> {
             ),
           );
           Navigator.pop(context);
-
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -234,34 +257,34 @@ class _ProfileScreenState extends State<Editprofile> {
   }
 
   Widget buildProfileImage() {
-    //if local image is choose from gallery
+    //if user pick a new image from camera or gallery
     if (image != null) {
       return CircleAvatar(
-        radius: 90,
+        radius: 60,
         backgroundColor: Colors.grey,
         backgroundImage: FileImage(image!),
       );
     }
-    String url;
-    if (serverImageName != null) {
-      url = '${Myconfig.baseUrl}/pawpal/server/assets/person/$serverImageName?v=${DateTime.now().millisecondsSinceEpoch}';
-    } else {
-      url =
-          '${Myconfig.baseUrl}/pawpal/server/assets/person/person_${widget.user.id}.png?v=${DateTime.now().millisecondsSinceEpoch}';
-    }
 
-    return CircleAvatar(
-      radius: 90,
-      backgroundColor: Colors.grey,
-      child: ClipOval(
-        child: Image.network(
-          url,
-          width: 180,
-          height: 180,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => getInitialText(),
+    if (uploadImage != null && uploadImage!.isNotEmpty) {
+      return CircleAvatar(
+        radius: 60,
+        backgroundColor: Colors.grey[200],
+        child: ClipOval(
+          child: Image.network(
+            '${Myconfig.baseUrl}/assets/person/$uploadImage?v=${DateTime.now().millisecondsSinceEpoch}',
+            width: 120,
+            height: 120,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => getInitialText(),
+          ),
         ),
-      ),
+      );
+    }
+    return CircleAvatar(
+      radius: 60,
+      backgroundColor: Colors.grey,
+      child: getInitialText(),
     );
   }
 

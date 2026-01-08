@@ -18,7 +18,7 @@ class PetDetailScreen extends StatefulWidget {
 
 class _PetDetailScreenState extends State<PetDetailScreen> {
   bool isGuest() {
-    return widget.user.id == 0;
+    return widget.user.id == "0";
   }
 
   @override
@@ -30,209 +30,173 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: Colors.yellow,
+            color: Colors.white,
           ),
         ),
         backgroundColor: Colors.blue,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: 250,
+              height: 300,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.grey,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
+                color: const Color.fromARGB(255, 207, 207, 207),
               ),
-              child: Image.network(
-                '${Myconfig.baseUrl}/assets/pet/pet_${widget.petData.petid}_1.png',
-                fit: BoxFit.fill,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.pets, size: 80, color: Colors.grey),
+              child: ClipRRect(
+                borderRadius: const BorderRadiusGeometry.vertical(
+                  
+                  bottom: Radius.circular(30),
+                ),
+                child: Image.network(
+                  '${Myconfig.baseUrl}/assets/pet/pet_${widget.petData.petid}_1.png',
+                  width: double.infinity,
+                  height: 300,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Center(
+                    child: Icon(Icons.pets, size: 80, color: Colors.grey),
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 20),
-            Table(
-              border: TableBorder.all(
-                color: Colors.blueGrey,
-                width: 1.0,
-                style: BorderStyle.solid,
-              ),
-              columnWidths: {0: FixedColumnWidth(100.0), 1: FlexColumnWidth()},
-              children: [
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Pet Name'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.petname.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Gender'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.gender.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Age'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.age.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Health'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.health.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('description'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.description.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('posted by'),
-                      ),
-                    ),
-                    TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.petData.created_at.toString()),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                      Text(
+                          widget.petData.petname.toString(),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
+                        ),
+                  const SizedBox(height: 4),
+                  Text(
+                    "Posted on: ${widget.petData.created_at}",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(height: 10),
 
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child:
-                  (widget.petData.petCategory == 'Donation Request' ||
-                      widget.petData.petCategory == 'Help/Rescue')
-                  ? ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                      ),
-                      icon: const Icon(
-                        Icons.volunteer_activism,
-                        color: Colors.white,
-                      ),
-                      label: const Text(
-                        "Donate Now",
-                        style: TextStyle(color: Colors.white,fontSize: 20),
-                      ),
-                      onPressed: () {
-                        if (isGuest()) {
-                          showLoginDialog();
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DonationScreen(
-                                user: widget.user,
-                                petData: widget.petData,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    )
-                  : ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                      ),
-                      icon: const Icon(Icons.home, color: Colors.white),
-                      label: const Text(
-                        "Request to Adopt",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      onPressed: () {
-                        if (isGuest()) {
-                          showLoginDialog();
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdoptionScreen(
-                                user: widget.user,
-                                petData: widget.petData,
-                              ),
-                            ),
-                          );
-                        }
-                      },
+                  infoCard(
+                    Icons.pets_outlined, 
+                    "Gender", 
+                    widget.petData.gender.toString()
                     ),
+                  infoCard(
+                    Icons.calendar_today_outlined, 
+                    "Age", 
+                    "${widget.petData.age} years old"
+                    ),
+                  infoCard(
+                    Icons.health_and_safety, 
+                    "Health", 
+                    widget.petData.health.toString()
+                    ),
+                  const Text(
+                    "Description",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      widget.petData.description.toString(),
+                      style: TextStyle(
+                        color:  Colors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child:
+                        (widget.petData.petCategory == 'Donation Request' ||
+                            widget.petData.petCategory == 'Help/Rescue')
+                        ? ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                            ),
+                            icon: const Icon(
+                              Icons.volunteer_activism,
+                              color: Colors.white,
+                            ),
+                            label: const Text(
+                              "Donate Now",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (isGuest()) {
+                                showLoginDialog();
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DonationScreen(
+                                      user: widget.user,
+                                      petData: widget.petData,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                        : ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                            ),
+                            icon: const Icon(Icons.home, color: Colors.white),
+                            label: const Text(
+                              "Request to Adopt",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              if (isGuest()) {
+                                showLoginDialog();
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AdoptionScreen(
+                                      user: widget.user,
+                                      petData: widget.petData,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -261,6 +225,33 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
             child: const Text("Login"),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget infoCard(IconData icon, String title, String value) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 15),
+      elevation: 5,
+      child: ListTile(
+        leading: Container(
+          height: 50,
+          width: 50,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: Colors.blue),
+        ),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 93, 93, 93)),
+        ),
+        subtitle: Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
       ),
     );
   }

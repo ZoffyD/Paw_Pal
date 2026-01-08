@@ -16,22 +16,23 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
 late WebViewController _webcontroller;
+
   @override
   void initState() {
     super.initState();
 
-    String userid =widget.user.id ?? "0";
+    String userid = widget.user.id ?? "0";
     String name = widget.user.name ?? "Guest";
     String email = widget.user.email ?? "Guest@gmail.com";
     String phone = widget.user.phone ?? "0123456789";
     String amount = widget.amount.toStringAsFixed(2);
 
     String url ="${Myconfig.baseUrl}/api/payment.php?"
-      "userid = $userid&"
-      "name = $name&"
-      "email = $email&"
-      "phone = $phone&"
-      "amount = $amount";
+      "userid=$userid&"
+      "name=$name&"
+      "email=$email&"
+      "phone=$phone&"
+      "amount=$amount";
 
      
       _webcontroller = WebViewController()

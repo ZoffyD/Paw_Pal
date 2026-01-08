@@ -30,7 +30,7 @@ class _SplashscreenState extends State<Splashscreen> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/image/pawpal.png'),
+            Image.asset('assets/image/pawpal1.png'),
             SizedBox(height: 20),
             CircularProgressIndicator(),
             Text('Loading...'),

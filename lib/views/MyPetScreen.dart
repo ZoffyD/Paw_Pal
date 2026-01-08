@@ -49,7 +49,7 @@ class _MypetscreenState extends State<Mypetscreen> {
           'My Pet',
           style: TextStyle(
             fontSize: 24,
-            color: Colors.yellowAccent,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -57,7 +57,7 @@ class _MypetscreenState extends State<Mypetscreen> {
           IconButton(
             icon: Icon(
               Icons.refresh_rounded,
-              color: Colors.yellowAccent,
+              color: Colors.white,
               size: 30,
             ),
             onPressed: () {
@@ -207,7 +207,6 @@ class _MypetscreenState extends State<Mypetscreen> {
                               },
                               child: Row(
                                 children: [
-                                  // Pet Image with rounded corners
                                   Hero(
                                     tag: "pet_${petList[index].petid}",
                                     child: ClipRRect(
@@ -220,7 +219,7 @@ class _MypetscreenState extends State<Mypetscreen> {
                                         height: 110,
                                         color: Colors.grey[200],
                                         child: Image.network(
-                                          '${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${petList[index].petid}_1.png',
+                                          '${Myconfig.baseUrl}/assets/pet/pet_${petList[index].petid}_1.png',
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {

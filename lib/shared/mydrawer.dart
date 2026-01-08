@@ -38,7 +38,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     backgroundColor: Colors.white,
                     child: ClipOval(
                       child: Image.network(
-                        '${Myconfig.baseUrl}/pawpal_db/assets/person/person${widget.user!.id}.png?v=${DateTime.now().millisecondsSinceEpoch}',
+                        '${Myconfig.baseUrl}/assets/person/person${widget.user!.id}.png?v=${DateTime.now().millisecondsSinceEpoch}',
                         width: 90,
                         height: 90,
                         fit: BoxFit.cover,
@@ -47,10 +47,11 @@ class _MyDrawerState extends State<MyDrawer> {
                             widget.user?.name?.isNotEmpty == true
                                 ? widget.user!.name![0].toUpperCase()
                                 : "?",
+                                style: TextStyle(fontSize: 20),
                           );
                         },
                       ),
-                    ),
+                    )
                   )
                 : CircleAvatar(
                     backgroundColor: Colors.white,

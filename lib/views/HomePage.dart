@@ -8,6 +8,7 @@ import 'package:pawpal/views/PetDetailScreen.dart';
 import 'package:pawpal/views/SubmitPetScreen.dart';
 import 'package:pawpal/shared/mydrawer.dart';
 
+import 'LoginPage.dart';
 
 class Homepage extends StatefulWidget {
   final User? user;
@@ -22,7 +23,7 @@ class _HomepageState extends State<Homepage> {
   List<pet> petList = [];
   String status = "Loading . . .";
 
-  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit','Other'];
+  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit', 'Other'];
   String selectedFilter = 'All';
 
   TextEditingController searchController = TextEditingController();
@@ -51,17 +52,13 @@ class _HomepageState extends State<Homepage> {
           'PawPal Home',
           style: TextStyle(
             fontSize: 24,
-            color: Colors.yellowAccent,
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.refresh_rounded,
-              color: Colors.yellowAccent,
-              size: 30,
-            ),
+            icon: Icon(Icons.refresh_rounded, color: Colors.white, size: 30),
             onPressed: () {
               loadPet();
             },
@@ -222,7 +219,7 @@ class _HomepageState extends State<Homepage> {
                                         height: 110,
                                         color: Colors.grey[200],
                                         child: Image.network(
-                                          '${Myconfig.baseUrl}/pawpal/server/assets/pet/pet_${petList[index].petid}_1.png',
+                                          '${Myconfig.baseUrl}/assets/pet/pet_${petList[index].petid}_1.png',
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
@@ -327,12 +324,16 @@ class _HomepageState extends State<Homepage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Submitpetscreen(user: widget.user),
-            ),
-          );
+          if (widget.user!.id == "0") {
+            showLoginDialog();
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Submitpetscreen(user: widget.user),
+              ),
+            );
+          }
         },
         backgroundColor: Colors.blueAccent,
         child: const Icon(Icons.add, color: Colors.white),
@@ -346,10 +347,7 @@ class _HomepageState extends State<Homepage> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            PetDetailScreen(
-              user: widget.user!, 
-              petData: currentPet
-          ),
+            PetDetailScreen(user: widget.user!, petData: currentPet),
       ),
     );
   }
@@ -395,4 +393,28 @@ class _HomepageState extends State<Homepage> {
         });
   }
 
+  void showLoginDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Please login to use the features"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Loginpage()),
+              );
+            },
+            child: const Text("Login"),
+          ),
+        ],
+      ),
+    );
+  }
 }

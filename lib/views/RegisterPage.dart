@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawpal/myconfig.dart';
@@ -36,113 +35,138 @@ class _RegisterpageState extends State<RegisterPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Register',
-          style: TextStyle(color: Colors.amber, fontSize: 23.0),
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-            child: SizedBox(
-              width: width,
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Image.asset('assets/image/pawpal.png', scale: 2.0),
-                  ),
-                  SizedBox(height: 5.0),
-                  TextField(
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                  Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/image/pawpal1.png',
+                      height: 200,
+                      fit: BoxFit.contain,
                     ),
                   ),
-                  SizedBox(height: 5.0),
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      border: OutlineInputBorder(),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 31, 60, 136),
                     ),
                   ),
-                  SizedBox(height: 5.0),
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Phone No.',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  TextField(
-                    controller: passwordController,
-                    obscureText: isVisible,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          if (isVisible) {
-                            isVisible = false;
-                          } else {
-                            isVisible = true;
-                          }
-                          setState(() {});
-                        },
-                        icon: Icon(Icons.visibility),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 5.0),
-                  TextField(
-                    controller: ConfirmpasswordController,
-                    obscureText: isVisible,
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          if (isVisible) {
-                            isVisible = false;
-                          } else {
-                            isVisible = true;
-                          }
-                          setState(() {});
-                        },
-                        icon: Icon(Icons.visibility),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        print('Register button is pressed');
-                        RegisterValidation();
-                      },
-                      child: Text('Register'),
-                    ),
-                  ),
-                  SizedBox(height: 7.0),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Loginpage(),
+
+                  const SizedBox(height: 30),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 15,
+                          offset: const Offset(0, 5),
                         ),
-                      );
-                    },
-                    child: Text('Already have an account ? Login here'),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        buildTextField(
+                          controller: nameController,
+                          label: 'Name',
+                          icon: Icons.person_outline,
+                          inputType: TextInputType.name,
+                        ),
+                        const SizedBox(height: 16.0),
+                        buildTextField(
+                          controller: emailController,
+                          label: 'Email Address',
+                          icon: Icons.email_outlined,
+                          inputType: TextInputType.emailAddress,
+                        ),
+                        const SizedBox(height: 16.0),
+                        buildTextField(
+                          controller: phoneController,
+                          label: 'Phone number',
+                          icon: Icons.phone_android_outlined,
+                          inputType: TextInputType.phone,
+                        ),
+                        const SizedBox(height: 16.0),
+                        passwordField(
+                          controller: passwordController,
+                          label: 'Password',
+                        ),
+                        const SizedBox(height: 16.0),
+                        passwordField(
+                          controller: ConfirmpasswordController,
+                          label: 'Confirm Password',
+                        ),
+                        const SizedBox(height: 16.0),
+
+                        SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusGeometry.circular(12),
+                              ),
+                              elevation: 4,
+                            ),
+                            onPressed: () {
+                              RegisterValidation();
+                            },
+                            child: Text(
+                              'Register',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 7.0),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Already have an account ?",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 56, 55, 55),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Loginpage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Login here',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -176,19 +200,19 @@ class _RegisterpageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return;
     }
-    if(password .length < 6){
+    if (password.length < 6) {
       SnackBar snackBar = const SnackBar(
         content: Text('Password must be at least 6 characters long'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;  
+      return;
     }
-    if(phone.length < 10 || phone.length > 11){
+    if (phone.length < 10 || phone.length > 11) {
       SnackBar snackBar = const SnackBar(
         content: Text('Please enter a valid phone number'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      return;  
+      return;
     }
 
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
@@ -260,7 +284,7 @@ class _RegisterpageState extends State<RegisterPage> {
             var jsonResponse = response.body;
             var resarray = jsonDecode(jsonResponse);
             log(jsonResponse);
-            
+
             if (resarray['success']) {
               if (!mounted) return;
               SnackBar snackBar = const SnackBar(
@@ -311,5 +335,51 @@ class _RegisterpageState extends State<RegisterPage> {
         isLoading = false;
       });
     }
+  }
+
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required TextInputType inputType,
+  }) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.blue),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 246, 245, 245),
+      ),
+    );
+  }
+
+  Widget passwordField({
+    required TextEditingController controller,
+    required String label,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: isVisible,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(Icons.lock_clock_outlined, color: Colors.blue),
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              isVisible = !isVisible;
+            });
+          },
+          icon: Icon(
+            isVisible ? Icons.visibility_off : Icons.visibility,
+            color: const Color.fromARGB(255, 96, 93, 93),
+          ),
+        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 246, 245, 245),
+      ),
+    );
   }
 }

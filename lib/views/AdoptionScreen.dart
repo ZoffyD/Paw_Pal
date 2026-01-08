@@ -25,8 +25,9 @@ class _AdoptionScreenState extends State<AdoptionScreen> {
       appBar: AppBar(
         title: const Text(
           "Adoption Request",
-          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.blue,
       ),
       body: Padding(
@@ -39,7 +40,7 @@ class _AdoptionScreenState extends State<AdoptionScreen> {
               radius: 60,
               backgroundColor: Colors.grey,
               backgroundImage: NetworkImage(
-                "${Myconfig.baseUrl}/pawpal_db/assets/pet/pet_${widget.petData.petid}_1.png",
+                "${Myconfig.baseUrl}/assets/pet/pet_${widget.petData.petid}_1.png",
               ),
             ),
             const SizedBox(height: 10),
@@ -134,7 +135,6 @@ class _AdoptionScreenState extends State<AdoptionScreen> {
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(const SnackBar(content: Text("Request sent")));
-              Navigator.pop(context);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

@@ -25,7 +25,6 @@ class _LoginpageState extends State<Loginpage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     loadPreferences();
   }
@@ -41,151 +40,236 @@ class _LoginpageState extends State<Loginpage> {
       width = width;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Login Page",
-          style: TextStyle(fontSize: 25, color: Colors.yellowAccent),
-        ),
-        backgroundColor: Colors.blue,
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsetsGeometry.all(16.0),
-                  child: Image.asset('assets/image/pawpal.png', scale: 2.0),
-                ),
-                TextField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                TextField(
-                  controller: passwordController,
-                  obscureText: visible,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        if (visible) {
-                          visible = false;
-                        } else {
-                          visible = true;
-                        }
-                        setState(() {});
-                      },
-                      icon: Icon(Icons.visibility),
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/image/pawpal1.png',
+                      height: 200,
+                      fit: BoxFit.contain,
                     ),
-                    border: OutlineInputBorder(),
                   ),
-                ),
-                SizedBox(height: 5.0),
+                  const SizedBox(height: 15),
+                  const Text(
+                    'Welcome Back !',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 31, 60, 136),
+                    ),
+                  ),
+                  const SizedBox(height:30),
+                  Container(
+                    padding: const EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 15,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelText: 'Email Address',
+                            prefixIcon: const Icon(
+                              Icons.email_outlined,
+                              color: Colors.blueAccent,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 246, 245, 245),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                              horizontal: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
 
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Text("Remember Me"),
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (value) {
-                          isChecked = value!;
-                          setState(() {});
-                          if (isChecked) {
-                            if (emailController.text.isNotEmpty &&
-                                passwordController.text.isNotEmpty) {
-                              prefUpdate(isChecked);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Preferences Stored"),
-                                  duration: Duration(seconds: 4),
-                                ),
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    "Please fill in all the details",
-                                  ),
-                                  duration: Duration(seconds: 4),
-                                ),
-                              );
-                              isChecked = false;
-                              setState(() {});
-                            }
-                          } else {
-                            prefUpdate(isChecked);
-                            if (emailController.text.isEmpty &&
-                                passwordController.text.isEmpty) {
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Preferences Removed"),
-                                duration: Duration(seconds: 4),
-                                backgroundColor: Colors.red,
+                        TextField(
+                          controller: passwordController,
+                          obscureText: visible,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: const Icon(
+                              Icons.lock_clock_outlined,
+                              color: Colors.blueAccent,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  visible = !visible;
+                                });
+                              },
+                              icon: Icon(
+                                visible
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: const Color.fromARGB(255, 73, 61, 61),
                               ),
-                            );
-                            emailController.clear();
-                            passwordController.clear();
-                            setState(() {});
-                          }
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: const Color.fromARGB(255, 224, 223, 223),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                              horizontal: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Checkbox(
+                                  value: isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isChecked = value!;
+                                      if (!isChecked) {
+                                        prefUpdate(false);
+                                        emailController.clear();
+                                        passwordController.clear();
+                                      }
+                                    });
+                                  },
+                                ),
+                                const Text(
+                                  'Remember Me',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Feature Coming Soon"),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Forgot Password ?",
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        SizedBox(
+                          width: double.infinity,
+                          height: 55,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 3,
+                            ),
+                            onPressed: () {
+                              if (isChecked) prefUpdate(true);
+                              loginuser();
+                            },
+                            child: const Text(
+                              'Login',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Dont have an account ?",
+                        style: TextStyle(color: Color.fromARGB(255, 83, 83, 83)),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ),
+                          );
                         },
+                        child: Text(
+                          'Register here.',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
+                  const SizedBox(height: 20),
+
+                  TextButton(
                     onPressed: () {
-                      loginuser();
+                      User guest = User(
+                        id: "0",
+                        name: "Guest",
+                        email: "guest@gmail.com",
+                        phone: "N/A",
+                        password: "N/A",
+                        RegDate: "N/A",
+                      );
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Homepage(user: guest),
+                        ),
+                      );
                     },
-                    child: Text('Login'),
+                    child: Text(
+                      'Continue as Guest',
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
-                ),
-                SizedBox(height: 7.0),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RegisterPage(),
-                      ),
-                    );
-                  },
-                  child: Text('Don\'t have an account? Register here.'),
-                ),
-                const SizedBox(height: 7.0),
-                const Text('Forgot Password?'),
-                const SizedBox(height:10.0),
-                GestureDetector(
-                  onTap: () {
-                    User guest = User(
-                      id: "0", 
-                      name: "Guest", 
-                      email: "guest@gmail.com", 
-                      phone: "N/A", 
-                      password: "N/A", 
-                      RegDate: "N/A"
-                    );
-                    
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => Homepage(user: guest)),
-                    );
-                  },
-                  child: Text('Continue as Guest', style: TextStyle(fontSize: 16)),
-                ),
-                
-              ],
+                ],
+              ),
             ),
           ),
         ),

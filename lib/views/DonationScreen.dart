@@ -5,7 +5,6 @@ import '../model/pet.dart';
 import '../model/user.dart';
 import '../myconfig.dart';
 
-
 class DonationScreen extends StatefulWidget {
   final User user;
   final pet petData;
@@ -26,8 +25,12 @@ class _DonationScreenState extends State<DonationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Make a Donation"),
-        backgroundColor: Colors.orange, // Orange to match the "Donate" theme
+        title: const Text(
+          "Make a Donation",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.orange,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -177,7 +180,7 @@ class _DonationScreenState extends State<DonationScreen> {
         body: {
           "userid": widget.user.id,
           "petid": widget.petData.petid,
-          "donationType": selectedType, 
+          "donationType": selectedType,
           "amount": amount,
           "description": description,
         },
@@ -187,30 +190,33 @@ class _DonationScreenState extends State<DonationScreen> {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
-        
+
         if (data['status'] == 'success') {
-           Navigator.pop(context); 
-           ScaffoldMessenger.of(context).showSnackBar(
-             const SnackBar(
-               content: Text("Donation Successful!"),
-               backgroundColor: Colors.green,
-             ),
-           );
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Donation Successful!"),
+              backgroundColor: Colors.green,
+            ),
+          );
         } else {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-               content: Text(data['message'] ?? "Donation Failed"),
-               backgroundColor: Colors.red,
-             ),
-           );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(data['message'] ?? "Donation Failed"),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-             const SnackBar(content: Text("Server Error"), backgroundColor: Colors.red),
+          const SnackBar(
+            content: Text("Server Error"),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } catch (e) {
-      Navigator.pop(context); 
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e"), backgroundColor: Colors.red),
       );

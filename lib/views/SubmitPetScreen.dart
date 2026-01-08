@@ -60,146 +60,158 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Submit Pet Page',
+          'Submit New Post',
           style: TextStyle(
-            color: Colors.amber,
+            color: Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: Colors.blue,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
-
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: SizedBox(
-            width: width,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 10.0),
-                  TextField(
-                    controller: petNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Pet Name',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildSectionTitle("Pet Photos"),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildImageSlot(1, image1, true),
+                      if( image1 !=null)
+                      _buildImageSlot(2, image2, true),
+                      if( image2 !=null)
+                      _buildImageSlot(3, image3, true),
+                    ],
                   ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    controller: ageController,
-                    decoration: InputDecoration(
-                      labelText: 'Pet Age',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              _buildSectionTitle("Infomation"),
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _buildTextField(
+                        petNameController,
+                        "Pet Name",
+                        Icons.pets,
+                        false,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Pet Gender',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildTextField(
+                              ageController,
+                              "Age",
+                              Icons.calendar_today,
+                              false,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: _buildDropdown(
+                              gender,
+                              selectedGender,
+                              "Gender",
+                              Icons.male,
+                              (val) {
+                                setState(() => selectedGender = val!);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    items: gender.map((String type) {
-                      return DropdownMenuItem<String>(
-                        value: type,
-                        child: Text(type),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedType = newValue!;
-                      });
-                    },
+                    ],
                   ),
-                  SizedBox(height: 10.0),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Pet Type',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              const SizedBox(height: 10),
+              _buildSectionTitle("Pet Details"),
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      _buildDropdown(
+                        petType,
+                        selectedType,
+                        "Pet Type",
+                        Icons.pets_sharp,
+                        (val) => setState(() => selectedType = val!),
                       ),
-                    ),
-                    items: petType.map((String type) {
-                      return DropdownMenuItem<String>(
-                        value: type,
-                        child: Text(type),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedType = newValue!;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Category',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                      const SizedBox(height: 10),
+                      _buildDropdown(
+                        category,
+                        selectedCategory,
+                        "Post Category",
+                        Icons.category,
+                        (val) => setState(() => selectedCategory = val!),
                       ),
-                    ),
-                    items: category.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedCategory = newValue!;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Health',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                      const SizedBox(height: 10),
+                      _buildDropdown(
+                        health,
+                        selectedHealth,
+                        "Health Status",
+                        Icons.medical_services,
+                        (val) => setState(() => selectedHealth = val!),
                       ),
-                    ),
-                    items: health.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        selectedHealth = newValue!;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 10.0),
-                  TextField(
-                    maxLines: 2,
-                    decoration: InputDecoration(
-                      labelText: 'Description',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        maxLines: 2,
+                        decoration: InputDecoration(
+                          labelText: 'Description',
+                          prefixIcon: const Icon(
+                            Icons.description,
+                            color: Colors.blue,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: const Color.fromARGB(255, 242, 235, 235),
+                        ),
+                        onChanged: (value) => description = value,
                       ),
-                    ),
-                    onChanged: (value) {
-                      description = value;
-                    },
+                    ],
                   ),
-                  SizedBox(height: 10.0),
-                  TextField(
+                ),
+              ),
+              const SizedBox(height: 10.0),
+              Card(
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
                     maxLines: 3,
                     controller: locationController,
                     decoration: InputDecoration(
                       labelText: 'Location',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+                      border: InputBorder.none,
                       suffixIcon: IconButton(
                         icon: Icon(Icons.my_location),
                         onPressed: () async {
@@ -217,175 +229,143 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
-                  Text("Upload Pet Image (Max 3 images)"),
-                  SizedBox(height: 10.0),
-                  SizedBox(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            chooseImageSource(1);
-                          },
-                          child: Container(
-                            width: width / 4,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(12.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                              image: image1 != null
-                                  ? DecorationImage(
-                                      image: FileImage(image1!),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
-                            ),
-                            child: image1 == null
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.camera_alt,
-                                        size: 50,
-                                        color: Colors.grey[700],
-                                      ),
-                                      SizedBox(height: 10.0),
-                                      Text(
-                                        'Upload image',
-                                        style: TextStyle(color: Colors.grey),
-                                      ),
-                                    ],
-                                  )
-                                : null,
-                          ),
-                        ),
-                        if (image1 != null)
-                          GestureDetector(
-                            onTap: () {
-                              chooseImageSource(2);
-                            },
-                            child: Container(
-                              width: width / 4,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                                image: image2 != null
-                                    ? DecorationImage(
-                                        image: FileImage(image2!),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
-                              ),
-                              child: image2 == null
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt,
-                                          size: 50,
-                                          color: Colors.grey[700],
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        Text(
-                                          'Upload image',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
-                                    )
-                                  : null,
-                            ),
-                          ),
-                        if (image2 != null)
-                          GestureDetector(
-                            onTap: () {
-                              chooseImageSource(3);
-                            },
-                            child: Container(
-                              width: width / 4,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(12.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black,
-                                    blurRadius: 5,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                                image: image3 != null
-                                    ? DecorationImage(
-                                        image: FileImage(image3!),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
-                              ),
-                              child: image3 == null
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.camera_alt,
-                                          size: 50,
-                                          color: Colors.grey[700],
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        Text(
-                                          'Upload image',
-                                          style: TextStyle(color: Colors.grey),
-                                        ),
-                                      ],
-                                    )
-                                  : null,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      minimumSize: Size(width, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      showSubmissionDialog();
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  padding: const EdgeInsets.symmetric(vertical:16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  elevation: 3,
+                ),
+                onPressed: () {
+                  showSubmissionDialog();
+                },
+                child: Text('Submit Post', 
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold)),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageSlot(int num, File? image, bool isEnable) {
+    return GestureDetector(
+      
+      onTap: () => chooseImageSource(num),
+      child: Container(
+        width: width / 4.0,
+        height: 100,
+        decoration: BoxDecoration(
+          color: isEnable
+          ? (image == null ? const Color.fromARGB(255, 190, 190, 190) : Colors.white)
+          :Colors.grey,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isEnable
+            ? (image == null ? const Color.fromARGB(255, 246, 243, 243) : Colors.blue)
+            : Colors.grey,
+            width: image == null ? 1 : 2,
+          ),
+          image: image != null
+              ? DecorationImage(image: FileImage(image), fit: BoxFit.cover)
+              : null,
+        ),
+        child: image == null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isEnable ? Icons.add_a_photo : Icons.lock, 
+                    color: isEnable ? Colors.black
+                    : Colors.black),
+                  const SizedBox(height: 4),
+                  Text("Photo $num", style: TextStyle(fontSize:10, color: Colors.black, fontWeight: FontWeight.bold))
+                ],
+              )
+            : Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  margin: const EdgeInsets.all(4),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.edit, size: 14, color: Colors.blue),
+                ),
+              ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon,
+    bool manyLine,
+  ) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.blue),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 242, 235, 235)
+      ),
+    );
+  }
+
+  Widget _buildDropdown(
+    List<String> items,
+    String value,
+    String label,
+    IconData icon,
+    Function(String?) onChanged,
+  ) {
+    return DropdownButtonFormField<String>(
+      initialValue: value,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: Colors.blue),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        filled: true,
+        fillColor: const Color.fromARGB(255, 242, 235, 235),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 15,
+          horizontal: 10,
+        ),
+      ),
+      items: items.map((String val) {
+        return DropdownMenuItem<String>(
+          value: val, 
+          child: Text(val)
+          );
+      }).toList(),
+      onChanged: onChanged,
     );
   }
 
@@ -480,7 +460,7 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
   Future<void> cropImage(File currentFile, int num) async {
     final CroppedFile? croppedFile = await ImageCropper().cropImage(
       sourcePath: currentFile.path,
-      aspectRatio: CropAspectRatio(ratioX: 5, ratioY: 3),
+      aspectRatio: CropAspectRatio(ratioX: 5, ratioY: 5),
       uiSettings: [
         AndroidUiSettings(
           toolbarTitle: 'Crop Image',
@@ -512,8 +492,6 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      //test where location service is enabled or not
-      //if not
       return Future.error('Location services are disabled.');
     }
 
@@ -654,7 +632,7 @@ class _SubmitpetscreenState extends State<Submitpetscreen> {
             'userid': widget.user!.id.toString(),
             'petName': petName,
             'age': age,
-            'gender':gender,
+            'gender': gender,
             'petType': Type,
             'petCategory': petCategory,
             'health': health,
