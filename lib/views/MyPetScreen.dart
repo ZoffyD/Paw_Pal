@@ -6,7 +6,6 @@ import 'package:pawpal/model/user.dart';
 import 'package:pawpal/views/SubmitPetScreen.dart';
 import '../model/pet.dart';
 import '../shared/mydrawer.dart';
-import 'PetDetailScreen.dart';
 
 class Mypetscreen extends StatefulWidget {
   final User? user;
@@ -24,7 +23,7 @@ class _MypetscreenState extends State<Mypetscreen> {
 
   TextEditingController searchController = TextEditingController();
 
-  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit','Other'];
+  List<String> filterList = ['All', 'Cat', 'Dog', 'Rabbit', 'Other'];
   String selectedFilter = 'All';
 
   @override
@@ -55,11 +54,7 @@ class _MypetscreenState extends State<Mypetscreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.refresh_rounded,
-              color: Colors.white,
-              size: 30,
-            ),
+            icon: Icon(Icons.refresh_rounded, color: Colors.white, size: 30),
             onPressed: () {
               loadPet();
             },
@@ -168,6 +163,7 @@ class _MypetscreenState extends State<Mypetscreen> {
                   ],
                 ),
               ),
+              //Pet List
               Expanded(
                 child: petList.isEmpty
                     ? Center(
@@ -188,23 +184,20 @@ class _MypetscreenState extends State<Mypetscreen> {
                         ),
                       )
                     : ListView.builder(
-                        padding: const EdgeInsets.only(top: 10, bottom: 80),
+                        padding: const EdgeInsets.all(16),
                         itemCount: petList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Card(
-                            elevation: 3,
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 16,
-                            ),
+                            elevation: 5,
+                            margin: const EdgeInsets.only(bottom: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(15),
-                              onTap: () {
-                                showDetails(index);
-                              },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 0,
+                              ),
                               child: Row(
                                 children: [
                                   Hero(
@@ -234,7 +227,7 @@ class _MypetscreenState extends State<Mypetscreen> {
                                     ),
                                   ),
                                   const SizedBox(width: 12),
-                                  // Details
+                                  // Info
                                   Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -250,7 +243,7 @@ class _MypetscreenState extends State<Mypetscreen> {
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.black87,
+                                              color: Colors.black,
                                             ),
                                           ),
                                           const SizedBox(height: 4),
@@ -303,14 +296,17 @@ class _MypetscreenState extends State<Mypetscreen> {
                                       ),
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 16,
-                                      color: Colors.grey,
+                                  IconButton(
+                                    onPressed: () {
+                                      showDeleteDialog(index);
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                      size: 28,
                                     ),
                                   ),
+                                  const SizedBox(width: 8),
                                 ],
                               ),
                             ),
@@ -337,15 +333,66 @@ class _MypetscreenState extends State<Mypetscreen> {
     );
   }
 
-  void showDetails(int index) {
-    pet currentPet = petList[index];
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            PetDetailScreen(user: widget.user!, petData: currentPet),
-      ),
+  void showDeleteDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Delete Post"),
+          content: Text("Are you sure you want to delete ?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                deletePet(index);
+              },
+              child: const Text(
+                "Delete",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  void deletePet(int index) {
+    http
+        .post(
+          Uri.parse("${Myconfig.baseUrl}/api/delete_pet.php"),
+          body: {"petid": petList[index].petid},
+        )
+        .then((response) {
+          if (response.statusCode == 200) {
+            var data = jsonDecode(response.body);
+            if (data['success'] == true) {
+              setState(() {
+                petList.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Pet deleted successfully"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Failed to delete pet"),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+          }
+        });
   }
 
   void loadPet() {
