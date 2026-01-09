@@ -61,11 +61,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             //  profile header
             Container(
-              
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 40),
               decoration: const BoxDecoration(
-                
                 borderRadius: BorderRadius.all(Radius.circular(30)),
               ),
               child: Column(
@@ -211,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (userData['profile_image'] != null &&
                 userData['profile_image'].toString().isNotEmpty) {
               image = userData['profile_image'];
-            }else{
+            } else {
               image = null;
             }
             isLoading = false;
@@ -248,7 +246,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         title: Text(
           title,
-          style: const TextStyle(fontSize: 12, color: Color.fromARGB(255, 85, 85, 85)),
+          style: const TextStyle(
+            fontSize: 12,
+            color: Color.fromARGB(255, 85, 85, 85),
+          ),
         ),
         subtitle: Text(
           value,
@@ -259,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildProfileImage() {
-    if (image == null || image!.isEmpty ) {
+    if (image == null || image!.isEmpty) {
       return CircleAvatar(
         radius: 90,
         backgroundColor: Colors.white,
@@ -269,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           decoration: BoxDecoration(
             color: Colors.grey,
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white, width:4)
+            border: Border.all(color: Colors.white, width: 4),
           ),
           alignment: Alignment.center,
           child: Text(
@@ -279,22 +280,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
-          )
-        )
+          ),
+        ),
       );
     }
-    String url = '${Myconfig.baseUrl}/assets/person/$image?v=${DateTime.now().millisecondsSinceEpoch}';
+    String url =
+        '${Myconfig.baseUrl}/assets/person/$image?v=${DateTime.now().millisecondsSinceEpoch}';
 
     return CircleAvatar(
       radius: 90,
       backgroundColor: Colors.grey,
       child: ClipOval(
-        child: Image.network(
-          url,
-          width: 180,
-          height: 180,
-          fit: BoxFit.cover,
-        ),
+        child: Image.network(url, width: 180, height: 180, fit: BoxFit.cover),
       ),
     );
   }
@@ -330,9 +327,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
-                double amount = double.tryParse(amountController.text) ?? 0.00;
-                if (amount > 0) {
+                String text = amountController.text;
+                bool ValidFormat = RegExp(r'^\d+(\.\d{1,2})?$').hasMatch(text);
+                double? amount = double.tryParse(amountController.text) ?? 0.0;
+
+                if (ValidFormat && amount > 0) {
+                  Navigator.pop(context);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -342,6 +343,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ).then((value) {
                     _loadUserData();
                   });
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Invalid amount"),
+                    backgroundColor: Colors.red,)
+                  );
                 }
               },
               child: Text("Top Up"),

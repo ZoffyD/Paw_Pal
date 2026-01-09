@@ -395,7 +395,7 @@ class _MypetscreenState extends State<Mypetscreen> {
         });
   }
 
-  void loadPet() {
+  void loadPet() async {
     petList.clear();
     setState(() {
       status = "Loading . . .";

@@ -161,7 +161,7 @@ class _DonationScreenState extends State<DonationScreen> {
     if (selectedType == "Money") {
       amount = input;
 
-      if (double.tryParse(amount) == null) {
+      if (double.tryParse(amount) == null || double.tryParse(amount) == 0 ) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Please enter a valid amount"),
