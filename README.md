@@ -1,105 +1,136 @@
-# Pawpal - Flutter + PHP + MySQL
 
-PawPal Adoption and Donation application
-
-# 🐾 PawPal – Pet Adoption & Donation Mobile Application
-
-PawPal is an **Android-based mobile application** developed using **Flutter**, **PHP**, and **MySQL**.  
-The system allows users to browse pets, submit pets for adoption or donation, request adoptions, donate to pets in need, and manage their user profile.
-
-The backend is deployed on a **live server using cPanel**, and the frontend communicates with the backend using **HTTP GET/POST APIs with JSON responses**.
+# 🐾 PawPal  
+### Flutter + PHP + MySQL  
+Pet Adoption & Donation Mobile Application
 
 ---
 
-## 🔧 Project Setup
+## 📌 Project Overview
 
-### 1. Requirements
+PawPal is an **Android-based mobile application** developed using:
+
+- **Flutter** (Frontend)
+- **PHP** (Backend)
+- **MySQL** (Database)
+
+The application allows users to:
+- Browse pets available for adoption
+- Submit pets for adoption or donation
+- Request pet adoption
+- Donate to pets in need
+- Manage user profile and wallet
+
+Backend services are deployed on a **live server using cPanel**, and communication is handled through **HTTP GET/POST APIs with JSON responses**.
+
+---
+
+## 🔧 1. Requirements
 
 - Flutter SDK (Android only)
 - JomHosting / cPanel Hosting
 - MySQL Database
-- Billplz Sandbox Account (payment simulation)
+- Billplz Sandbox Account (Payment Simulation)
 
 ---
 
-## 📥 Installation
+## 📥 2. Installation
 
-### 1. Clone Project
+### 2.1 Clone Project
 
 ```bash
 git clone https://github.com/ZoffyD/Paw_Pal.git
-cd pawpal
+cd Paw_Pal
 flutter pub get
-2. Backend Setup (cPanel)
-Upload Backend Files
-Login to cPanel
+````
 
-Open File Manager
+---
 
-Navigate to:
+### 2.2 Backend Setup (cPanel)
 
-Copy code
-public_html/
-Upload the server/ folder to:
+1. Login to **cPanel**
+2. Open **File Manager**
+3. Navigate to:
 
-bash
-Copy code
-public_html/pawpal/server/
-3. Database Setup
-Open MySQL Databases
+   ```
+   public_html/
+   ```
+4. Upload the `server/` folder to:
 
-Create:
+   ```
+   public_html/pawpal/server/
+   ```
 
-Database: pawpal_db
+---
 
-Database user & password
+### 2.3 Database Setup
 
-Assign the user to the database with ALL PRIVILEGES
+**Create Database**
 
-Import Database
-Open phpMyAdmin
+* Database name: `pawpal_db`
+* Create database user
+* Assign user with **ALL PRIVILEGES**
 
-Select pawpal_db
+**Import Database**
 
-Import pawpal_db.sql
+1. Open **phpMyAdmin**
+2. Select `pawpal_db`
+3. Import `pawpal_db.sql`
 
-4. Configure Database Connection
-Edit server/api/dbconnect.php:
+---
 
-php
-Copy code
+### 2.4 Configure Database Connection
+
+Edit `server/api/dbconnect.php`:
+
+```php
 $servername = "localhost";
 $username   = "cpanel_db_user";
 $password   = "cpanel_db_password";
 $dbname     = "cpanel_db_name";
-5. Configure Flutter API URL
-Edit lib/myconfig.dart:
+```
 
-dart
-Copy code
+---
+
+### 2.5 Configure Flutter API URL
+
+Edit `lib/myconfig.dart`:
+
+```dart
 static const String server = "https://yourdomain.com";
-6. Billplz Sandbox Configuration
+```
+
+---
+
+### 2.6 Billplz Sandbox Configuration
+
 Login to:
 
-arduino
-Copy code
+```
 https://sso.billplz-sandbox.com/
-Update:
+```
 
-payment.php
+Update the following files:
 
-php
-Copy code
+**payment.php**
+
+```php
 $api_key = 'YOUR_API_KEY';
 $collection_id = 'YOUR_COLLECTION_ID';
-payment_update.php
+```
 
-php
-Copy code
+**payment_update.php**
+
+```php
 $xkey = 'YOUR_X_KEY';
-7. Flutter Dependencies
-yaml
-Copy code
+```
+
+---
+
+## 📦 3. Flutter Dependencies
+
+Ensure the following dependencies exist in `pubspec.yaml`:
+
+```yaml
 http: ^1.5.0
 shared_preferences: ^2.3.2
 geolocator: ^14.0.2
@@ -108,240 +139,148 @@ image_picker: ^1.2.1
 image_cropper: ^11.0.0
 intl: ^0.20.2
 webview_flutter: ^4.13.0
+```
+
 Run:
 
-bash
-Copy code
+```bash
 flutter pub get
-8. Android Permissions
-Add to android/app/src/main/AndroidManifest.xml:
+```
 
-xml
-Copy code
+---
+
+## 📱 4. Android Permissions
+
+Add to `android/app/src/main/AndroidManifest.xml`:
+
+```xml
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 <activity
-  android:name="com.yalantis.ucrop.UCropActivity"
-  android:screenOrientation="portrait"
-  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-📁 Folder Structure
-php-template
-Copy code
+    android:name="com.yalantis.ucrop.UCropActivity"
+    android:screenOrientation="portrait"
+    android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+```
+
+---
+
+## 📁 5. Folder Structure
+
+```
 pawpal/
-│
 ├── server/
 │   ├── api/
-│   │   ├── dbconnect.php
-│   │   ├── login_user.php
-│   │   ├── register_user.php
-│   │   ├── submit_pet.php
-│   │   ├── adoption_request.php
-│   │   ├── submit_donation.php
-│   │   └── ...
-│   │
 │   ├── uploads/
 │   │   ├── pet/
-│   │   │   └── pet_<id>_<index>.png
 │   │   └── profile/
-│   │       └── user_<id>.png
-│
 ├── lib/
 │   ├── views/
 │   ├── model/
 │   └── myconfig.dart
-✨ Application Features & Code Explanation
-🔐 User Authentication
-Registration
+```
 
-Inputs: name, email, phone, password
+---
 
-Validations:
+## ✨ 6. Features & Functionality
 
-Email format
+### 🔐 User Authentication
 
-Phone length (10–11)
+* User registration with validation
+* Login with SHA-1 password hashing
+* Session stored using SharedPreferences
+* Guest login supported
 
-Password > 6 characters
+### 🐶 Public Pet Listing
 
-Empty field check
+* View all pets
+* Search by pet name
+* Filter by category
+* Card layout using `ListView.builder`
 
-Password is hashed before saving
+### ➕ Pet Submission
 
-Data inserted into tbl_users
+* Submit pet for adoption or donation
+* Upload up to **3 images**
+* Images encoded in Base64
+* Stored using `file_put_contents()`
+* Data saved in `tbl_pets`
 
-Login
+### 📄 Adoption Request
 
-Email + password authentication
+* Submit motivation message
+* Validation applied
+* Stored in `tbl_adoptions`
 
-Password matched using SHA-1 hashing
+### 💖 Donation Module
 
-User session stored using SharedPreferences
+* Donation types: Money, Food, Medical
+* Conditional form inputs
+* Stored in `tbl_donations`
 
-Guest login supported with limited access
+### 💳 Payment
 
-🐶 Public Pet Listing
-Loads all pets from backend using GET request
+* Billplz sandbox payment via WebView
+* Payment status update
 
-Displays pet cards using ListView.builder
+### 👤 Profile Management
 
-Search by pet name
+* View & edit profile
+* Upload profile image
+* Wallet balance simulation
 
-Filter by pet type/category
+---
 
-Selecting a pet opens Pet Details screen
+## ⚙️ 7. API Endpoints
 
-➕ Pet Submission
-Submit Pet Screen
+| Endpoint                     | Method | Description      |
+| ---------------------------- | ------ | ---------------- |
+| /register_user.php           | POST   | Register user    |
+| /login_user.php              | POST   | Login user       |
+| /get_all_pets.php            | GET    | Load all pets    |
+| /get_my_pets.php             | GET    | Load user pets   |
+| /submit_pet.php              | POST   | Submit pet       |
+| /update_profile.php          | POST   | Update pet       |
+| /get_user_detail.php         | GET    | Get user detail  |
+| /delete_pet.php              | POST   | Delete pet       |
+| /adoption_request.php        | POST   | Adoption request |
+| /submit_donation.php         | POST   | Submit donation  |
+| /get_my_donations.php        | GET    | Donation history |
+| /payment.php                 | GET    | Create payment   |
+| /payment_update.php          | GET    | Update payment   |
 
-Required fields:
+---
 
-Pet name
+## 🖼 8. Image Storage
 
-Pet type
-
-Category
-
-Health status
-
-Description
-
-Location (latitude & longitude)
-
-Upload up to 3 images
-
-Image control:
-
-Image 2 enabled only if Image 1 exists
-
-Image 3 enabled only if Image 2 exists
-
-Images are previewed and cropped before upload
-
-Submission Flow
-
-Validate all inputs
-
-Convert images to Base64
-
-Send POST request to submit_pet.php
-
-Images saved using file_put_contents()
-
-Pet record saved in tbl_pets
-
-📄 Pet Details & Adoption
-Displays full pet information
-
-“Request to Adopt” button for adoption category
-
-Adoption form:
-
-Motivation message
-
-Empty field validation
-
-Data inserted into tbl_adoptions
-
-💖 Donation Module
-Donation types:
-
-Money
-
-Food
-
-Medical
-
-Conditional input:
-
-Money → amount
-
-Food/Medical → description
-
-Donation saved in tbl_donations
-
-💳 Payment (Billplz Sandbox)
-Payment initiated via payment.php
-
-WebView used for Billplz payment page
-
-Payment status updated via payment_update.php
-
-Payment records stored in tbl_payments
-
-📜 Donation History
-Displays all donations by logged-in user
-
-Loaded using get_my_donations.php
-
-Shows donation type, amount, and status
-
-👤 User Profile & Edit Profile
-Displays:
-
-Name
-
-Email
-
-Phone
-
-Profile image
-
-Wallet balance
-
-Edit profile:
-
-Update name, phone, avatar
-
-Image uploaded and stored on server
-
-User session persists using SharedPreferences
-
-⚙️ API Endpoints
-Endpoint	Method	Description
-/register_user.php	POST	Register new user
-/login_user.php	POST	User login
-/get_user_details.php	GET	Load user profile
-/update_profile.php	POST	Update user profile
-/get_all_pets.php	GET	Load all pets
-/get_my_pets.php	GET	Load user pets
-/submit_pet.php	POST	Submit new pet
-/update_pet.php	POST	Update pet
-/delete_pet.php	POST	Delete pet
-/submit_adoption_request.php	POST	Submit adoption request
-/get_my_adoptions.php	GET	Load adoption history
-/submit_donation.php	POST	Submit donation
-/get_my_donations.php	GET	Load donation history
-/payment.php	GET	Create payment
-/payment_update.php	GET	Update payment status
-
-🖼 Image Storage
-bash
-Copy code
+```
 /server/api/uploads/pet/pet_<id>_<index>.png
-/server/api/uploads/profile/user_<id>.png
-Image paths are stored in the database as a JSON array.
+/server/api/uploads/profile/person<id>.png
+```
 
-❗ Notes
-HTTPS must be enabled
+Image paths are stored in the database as a **JSON array**.
 
-Android platform only
+---
 
-Billplz used in sandbox mode
+## ❗ Notes
 
-All APIs return JSON responses
+* HTTPS must be enabled
+* Android only (no iOS)
+* Billplz used in sandbox mode
+* All APIs return JSON
 
-✅ Conclusion
-PawPal is a complete Flutter–PHP–MySQL mobile application deployed on a live server using cPanel.
-It demonstrates authentication, CRUD operations, image upload, payment simulation, and session management. 
+---
 
-# Future Improvements
+## ✅ Conclusion
+
+PawPal is a complete Flutter–PHP–MySQL mobile application deployed using cPanel.
+It demonstrates authentication, CRUD operations, image upload, payment simulation, and session management.
+
+
+## Future Improvements
 - Push notification support
 - Admin approval workflow
 - Enhanced payment gateway integration
 - Advanced filtering and sorting
 - UI/UX improvements
-
-
-The system fulfills all course requirements and showcases practical implementation of mobile web programming concepts
