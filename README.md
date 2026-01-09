@@ -28,11 +28,7 @@ This project uses **live server deployment via cPanel** and demonstrates full-st
 
 Clone or download the project:
 
-```bash
-git clone https://github.com/Bakkien/pawpal.git
-cd pawpal
-flutter pub get
-2. Backend Setup (cPanel)
+1. Backend Setup (cPanel)
 Upload Backend Files
 Login to cPanel
 
