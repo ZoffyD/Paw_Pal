@@ -174,11 +174,14 @@ pawpal/
 │   ├── api/
 │   ├── uploads/
 │   │   ├── pet/
-│   │   └── profile/
+│   │   └── person/
 ├── lib/
 │   ├── views/
+│   ├── shared/
 │   ├── model/
+│   ├── main.dart
 │   └── myconfig.dart
+|
 ```
 
 ---
