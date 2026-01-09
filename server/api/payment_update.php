@@ -8,7 +8,7 @@ $email = $_GET['email'];
 $name = $_GET['name'];
 $phone = $_GET['phone'];
 
-$xkey = 'ce07557c56b66413c7b76fc6a30b363c506f1bf7ee68b338f98bc0092e7580cbd13861cafce223c3c94ad852e71363420899fd8d6863bbcbd571890b32104a92'; 
+$xkey = 'get ur x key'; 
 
 $data = array(
     'id' =>  $_GET['billplz']['id'],
