@@ -2,44 +2,204 @@
 
 PawPal Adoption and Donation application
 
-# Installation & Deployment Guide (cPanel)
+# 🐾 PawPal – Pet Adoption & Donation App
 
-This section explains how to deploy the PawPal backend using **cPanel hosting** and configure the Flutter application to connect to the live server.
+PawPal is an **Android mobile application** developed using **Flutter**, **PHP**, and **MySQL**.  
+The system allows users to browse pets, submit pets for adoption or donation, make adoption requests, donate to pets in need, and manage their user profile.
 
----
-
-## 1. Server Requirements
-
-Ensure the hosting environment provides:
-- cPanel access
-- PHP version 7.4 or higher
-- MySQL database support
-- File upload enabled
-- HTTPS enabled (recommended)
+This project uses **live server deployment via cPanel** and demonstrates full-stack mobile development.
 
 ---
 
-## 2. Backend Deployment (PHP on cPanel)
+## 🔧 Project Setup
 
-### 2.1 Upload PHP Files
+### 1. Requirements
 
-1. Login to **cPanel**
-2. Open **File Manager**
-3. navigate to public html
-4. create a new folder 
-5. Upload all PHP backend files
-6. 
-
-# Project Overview
-
-PawPal is a mobile application that supports **Android platform only**.  
-It is developed using **Flutter** as the frontend, **PHP** as the backend, and **MySQL** as the database.
-
-The application focuses on providing a platform for **pet adoption and donation**, where users can browse pets, submit adoption requests, donate to pets in need, and manage their user profile.
-
-The system demonstrates full-stack mobile application development, including user authentication, CRUD operations, image upload, payment simulation, and session management.
+- Flutter SDK (Android only)
+- JomHosting / cPanel Hosting
+- MySQL Database
+- Billplz Sandbox Account (Payment Simulation)
 
 ---
+
+## 📥 Installation
+
+### 1. Clone Project
+
+Clone or download the project:
+
+```bash
+git clone https://github.com/Bakkien/pawpal.git
+cd pawpal
+flutter pub get
+2. Backend Setup (cPanel)
+Upload Backend Files
+Login to cPanel
+
+Open File Manager
+
+Go to:
+
+Copy code
+public_html/
+Upload the server/ folder to:
+
+bash
+Copy code
+public_html/pawpal/server/
+3. Database Setup
+Create Database
+Open MySQL Databases
+
+Create:
+
+Database: pawpal_db
+
+Database user & password
+
+Assign user to database with ALL PRIVILEGES
+
+Import Database
+Open phpMyAdmin
+
+Select pawpal_db
+
+Import:
+
+pgsql
+Copy code
+pawpal_db.sql
+4. Configure Database Connection
+Edit:
+
+bash
+Copy code
+server/api/dbconnect.php
+php
+Copy code
+$servername = "localhost";
+$username   = "cpanel_db_user";
+$password   = "cpanel_db_password";
+$dbname     = "cpanel_db_name";
+5. Configure Flutter API URL
+Edit:
+
+bash
+Copy code
+lib/myconfig.dart
+dart
+Copy code
+static const String server = "https://yourdomain.com";
+6. Billplz Sandbox Configuration
+Login to:
+
+arduino
+Copy code
+https://sso.billplz-sandbox.com/
+Update API keys in:
+
+payment.php
+php
+Copy code
+$api_key = 'YOUR_API_KEY';
+$collection_id = 'YOUR_COLLECTION_ID';
+payment_update.php
+php
+Copy code
+$xkey = 'YOUR_X_KEY';
+7. Flutter Dependencies
+Ensure these dependencies exist in pubspec.yaml:
+
+yaml
+Copy code
+http: ^1.5.0
+shared_preferences: ^2.3.2
+geolocator: ^14.0.2
+geocoding: ^4.0.0
+image_picker: ^1.2.1
+image_cropper: ^11.0.0
+intl: ^0.20.2
+webview_flutter: ^4.13.0
+Run:
+
+bash
+Copy code
+flutter pub get
+8. Android Permissions
+Add to:
+
+css
+Copy code
+android/app/src/main/AndroidManifest.xml
+xml
+Copy code
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+
+<activity
+  android:name="com.yalantis.ucrop.UCropActivity"
+  android:screenOrientation="portrait"
+  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+📁 Folder Structure
+php-template
+Copy code
+pawpal/
+│
+├── server/
+│   ├── api/
+│   │   ├── dbconnect.php
+│   │   ├── submit_pet.php
+│   │   ├── get_my_pets.php
+│   │   └── ...
+│   │
+│   ├── uploads/
+│   │   ├── pet/
+│   │   │   └── pet_<id>_<index>.png
+│   │   └── profile/
+│   │       └── user_<id>.png
+│
+├── lib/
+│   ├── views/
+│   ├── model/
+│   └── myconfig.dart
+⚙️ API Usage
+Endpoint	Method	Description
+/register_user.php	POST	Register new user
+/login_user.php	POST	User login
+/get_user_details.php	GET	Load user profile
+/update_profile.php	POST	Update user profile
+/get_all_pets.php	GET	Load public pet list
+/get_my_pets.php	GET	Load user submitted pets
+/submit_pet.php	POST	Submit new pet
+/update_pet.php	POST	Update pet details
+/delete_pet.php	POST	Delete pet
+/submit_adoption_request.php	POST	Submit adoption request
+/get_my_adoptions.php	GET	Load adoption history
+/submit_donation.php	POST	Submit donation
+/get_my_donations.php	GET	Load donation history
+/payment.php	GET	Create payment
+/payment_update.php	GET	Update payment status
+
+🖼 Image Storage
+Uploaded images are stored at:
+
+bash
+Copy code
+/server/api/uploads/pet/pet_<id>_<index>.png
+/server/api/uploads/person/person <id>.png
+Image paths are stored in the database as a JSON array.
+
+❗ Notes
+HTTPS must be enabled on hosting
+
+API URLs must match domain
+
+Android only (no iOS support)
+
+Billplz is used in sandbox mode only
+
+--
 
 # User Authentication
 
