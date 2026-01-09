@@ -20,7 +20,7 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
   bool isGuest() {
     return widget.user.id == "0";
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,6 +129,8 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 15),
+
+                  if(widget.user.id != widget.petData.userId)
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -137,7 +139,7 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                             widget.petData.petCategory == 'Help/Rescue')
                         ? ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange,
+                              backgroundColor: Colors.green,
                             ),
                             icon: const Icon(
                               Icons.volunteer_activism,

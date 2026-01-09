@@ -30,7 +30,7 @@ class _DonationScreenState extends State<DonationScreen> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.green,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -128,7 +128,7 @@ class _DonationScreenState extends State<DonationScreen> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 onPressed: submitDonation,
                 child: Text(
                   "Confirm Donation",

@@ -41,7 +41,7 @@ class _MyDonationScreenState extends State<MyDonationScreen> {
           "Donation History",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.orangeAccent,
+        backgroundColor: Colors.green,
       ),
       body: donationList.isEmpty
           ? Center(
