@@ -8,8 +8,8 @@ $name = $_GET['name'];
 $amount = $_GET['amount']; 
 $userid = $_GET['userid'];
 
-$api_key = 'a0bf3010-2b35-40a8-a81d-6362a0bd73fa';
-$collection_id = 'ckw3sauq'; 
+$api_key = 'put your own api key';
+$collection_id = 'put your own collection id'; 
 $host = 'https://www.billplz-sandbox.com/api/v3/bills';
 
 $data = array(
@@ -19,8 +19,8 @@ $data = array(
           'name' => $name,
           'amount' => $amount * 100, // Cents
           'description' => 'Wallet Topup',
-          'callback_url' => "https://canorcannot.com/Eric/pawpal/server/api/return_url",
-          'redirect_url' => "https://canorcannot.com/Eric/pawpal/server/api/payment_update.php?userid=$userid&email=$email&name=$name&phone=$phone&amount=$amount" 
+          'callback_url' => "https://domain.com/pawpal/server/api/return_url",
+          'redirect_url' => "https://domain.com/pawpal/server/api/payment_update.php?userid=$userid&email=$email&name=$name&phone=$phone&amount=$amount" 
 );
 
 $process = curl_init($host);
