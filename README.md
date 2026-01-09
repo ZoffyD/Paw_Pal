@@ -2,15 +2,33 @@
 
 PawPal Adoption and Donation application
 
-# Installation
-1. Install XAMPP
-2. Open XAAMPP Control Panel and Start Apache and MySQL
-3. Download the project as zip file
-4. Extract the file in C:\xampp\htdcos
-5. Open localhost/phpymyadmin
-6. Create a database name "pawpal_db"
-7. Import the database
-8. After import successful, run the main file in VS code
+# Installation & Deployment Guide (cPanel)
+
+This section explains how to deploy the PawPal backend using **cPanel hosting** and configure the Flutter application to connect to the live server.
+
+---
+
+## 1. Server Requirements
+
+Ensure the hosting environment provides:
+- cPanel access
+- PHP version 7.4 or higher
+- MySQL database support
+- File upload enabled
+- HTTPS enabled (recommended)
+
+---
+
+## 2. Backend Deployment (PHP on cPanel)
+
+### 2.1 Upload PHP Files
+
+1. Login to **cPanel**
+2. Open **File Manager**
+3. navigate to public html
+4. create a new folder 
+5. Upload all PHP backend files
+6. 
 
 # Project Overview
 
